@@ -35,6 +35,6 @@ class UserViewSet(AuditableMixin, viewsets.GenericViewSet,
         """
         Get the current user
         """
-        print(request.user)
         serializer = self.get_serializer(request.user)
+
         return Response(serializer.data)

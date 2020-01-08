@@ -59,11 +59,6 @@ def post_migration_callback(sender, **kwargs):
     )
 
     create_db_comments(
-        table_name='user_groups',
-        table_comment='Django Authentication. Map users to groups (used by admin application).'
-    )
-
-    create_db_comments(
         table_name='django_migrations',
         table_comment='Used to track Django database migration state',
         column_comments={

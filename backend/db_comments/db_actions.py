@@ -18,6 +18,7 @@ def create_db_comments(table_name, table_comment, column_comments=None):
                 [table_comment]
             )
         except ProgrammingError:
+            print(table_name)
             print(_exception_message)
 
         if column_comments is not None:

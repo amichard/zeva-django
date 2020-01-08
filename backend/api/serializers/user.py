@@ -16,5 +16,4 @@ class UserSerializer(serializers.ModelSerializer):
         fields = (
             'id', 'first_name', 'last_name', 'email',
             'username', 'display_name', 'is_active',
-            'organization', 'roles', 'is_government_user', 'permissions',
-            'phone', 'cell_phone', 'title')
+            'organization', 'phone')

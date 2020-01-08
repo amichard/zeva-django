@@ -163,7 +163,7 @@ class UserAuthentication(authentication.BaseAuthentication):
             if not user.is_active:
                 raise exceptions.AuthenticationFailed(
                     'user_id "{}" does not exist'.format(username))
-        except User.DoesNotExist:
+        except UserProfile.DoesNotExist:
             raise exceptions.AuthenticationFailed(
                 'user_id "{}" does not exist'.format(username))
 

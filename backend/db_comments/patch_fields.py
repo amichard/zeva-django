@@ -30,39 +30,41 @@ class PatchedField(Field):
         """Detect if we're a foreign key, and if so, provide additional detail.
          Otherwise just return the comment"""
 
-        # if isinstance(self, ForeignKey):
-        #     # This has to be done after all models are loaded (which is why
-        #     # it's not done in the constructor)
-        #     try:
-        #         remote_class = self.related_model
-        #         remote_table = self.related_model.db_table_name() \
-        #             if hasattr(self.related_model, 'db_table_name') else None
+        if isinstance(self, ForeignKey):
+            # This has to be done after all models are loaded (which is why
+            # it's not done in the constructor)
+            try:
+                remote_class = self.related_model
+                remote_table = self.related_model.db_table_name() \
+                    if hasattr(self.related_model, 'db_table_name') else None
 
-        #         if self._db_comment is not None:
-        #             return 'Reference to primary key (id) of table {},' \
-        #                    ' with additional comment: {}'.format(
-        #                 remote_table,
-        #                 self._db_comment
-        #             )
+                if self._db_comment is not None:
+                    return 'Reference to primary key (id) of table {},' \
+                           ' with additional comment: {}'.format(
+                                remote_table,
+                                self._db_comment
+                            )
 
-        #         return 'Reference to primary key (id) of table {}'.format(
-        #             remote_table
-        #         )
+                return 'Reference to primary key (id) of table {}'.format(
+                    remote_table
+                )
+            except:
+                # something somewhere up the chain is catching exceptions
+                # and silently failing
+                logging.error(
+                    'caught an exception while attaching comments to a '
+                    'foreign key. Proceeding with comment set to None'
+                )
+                return None
 
-        #     except:
-        #         # something somewhere up the chain is catching exceptions and silently failing
-        #         logging.error('caught an exception while attaching comments to a foreign key.'
-        #                       ' Proceeding with comment set to None')
-        #         return None
-
-        # return self._db_comment
-        pass
+        return self._db_comment
 
 
 def patch_fields():
     """Insinuate PatchedField into class hierarchy"""
 
-    # Insert PatchedField in the hierarchy between Field and its immediate subclasses at runtime
+    # Insert PatchedField in the hierarchy between Field and its immediate
+    # subclasses at runtime
 
     to_patch = [
         CharField,
@@ -82,7 +84,8 @@ def patch_fields():
     ]
 
     for cls in to_patch:
-        # breadth-first search up the class tree looking for Field as a base class
+        # breadth-first search up the class tree looking for Field as a base
+        # class
 
         inspection_list = [cls]
         visited = []
@@ -102,9 +105,10 @@ def patch_fields():
 
             if Field in current.__bases__:
                 # replace Field in tuple of class bases with PatchedField
-                current.__bases__ = tuple(
-                    [PatchedField if base is Field else base for base in current.__bases__]
-                )
+                current.__bases__ = tuple([
+                    PatchedField if base is Field else base
+                    for base in current.__bases__
+                ])
                 break
 
             inspection_list = inspection_list + list(current.__bases__)
