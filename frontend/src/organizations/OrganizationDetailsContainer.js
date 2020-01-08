@@ -10,36 +10,27 @@ import axios from 'axios';
 import OrganizationDetailsPage from './components/OrganizationDetailsPage';
 
 const OrganizationDetailsContainer = (props) => {
-  const [details, setDetails] = useState([]);
+  const [details, setDetails] = useState({});
   const [loading, setLoading] = useState(true);
   const { keycloak } = props;
 
   const refreshDetails = () => {
     const { token } = keycloak;
+
+    setLoading(true);
+
     axios.get('http://localhost/api/users/current', {
       headers: { Authorization: `Bearer ${token}` },
     }).then((response) => {
-      console.error(response);
+      const { organization, displayName } = response.data;
+
+      setDetails({
+        displayName,
+        organization,
+      });
+
+      setLoading(false);
     });
-    // keycloak.updateToken(30).then(() => {
-    //   const client = new OrganizationDetailsClient('http://localhost:10000/grpc');
-
-    //   const request = new GetMyOrganizationRequest();
-
-    //   const metadadta = {
-    //     authorization: keycloak.idToken, // || token for auth token
-    //   };
-
-    //   const call = client.getMyOrganization(request, metadadta);
-
-    //   call.on('data', (response) => {
-    //     setDetails({
-    //       name: response.getName(),
-    //     });
-
-    //     setLoading(false);
-    //   });
-    // });
   };
 
   useEffect(() => {

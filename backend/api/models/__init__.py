@@ -1,3 +1,2 @@
-from . import organization
-from . import user_profile
-from . import user_creation_request
+from . import organization, organization_address
+from . import user_creation_request, user_profile

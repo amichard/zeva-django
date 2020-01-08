@@ -3,6 +3,7 @@ from django.db import models
 from django.db.models import F
 
 from auditable.models import Auditable
+from .organization_address import OrganizationAddress
 
 
 class Organization(Auditable):
@@ -14,6 +15,22 @@ class Organization(Auditable):
     name = models.CharField(
         max_length=500
     )
+
+    @property
+    def organization_address(self):
+        """
+        Gets the active address for the organization
+        """
+        data = OrganizationAddress.objects.filter(
+            effective_date__lte=date.today(),
+            organization_id=self.id
+        ).exclude(
+            expiration_date__lt=date.today()
+        ).exclude(
+            expiration_date=F('effective_date')
+        ).order_by('-effective_date', '-update_timestamp').first()
+
+        return data
 
     class Meta:
         db_table = 'organization'
