@@ -6,7 +6,7 @@ import django.contrib.auth.validators
 from auditable.models import Auditable
 
 
-class User(AbstractUser, Auditable):
+class UserProfile(Auditable):
     """
     User Model
     """

@@ -70,7 +70,7 @@ CACHES = {
 }
 
 # Auth User
-AUTH_USER_MODEL = 'api.user'
+# AUTH_USER_MODEL = 'api.user'
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (

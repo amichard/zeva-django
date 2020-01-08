@@ -4,7 +4,7 @@ from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from django.db.models import F, Q
 
-from api.models.user import User
+from api.models.user_profile import UserProfile
 from api.serializers.user import UserSerializer
 from auditable.views import AuditableMixin
 
@@ -18,7 +18,7 @@ class UserViewSet(AuditableMixin, viewsets.GenericViewSet,
     """
     permission_classes = (AllowAny,)
     http_method_names = ['get', 'post', 'put', 'patch']
-    queryset = User.objects.all()
+    queryset = UserProfile.objects.all()
 
     serializer_classes = {
         'default': UserSerializer

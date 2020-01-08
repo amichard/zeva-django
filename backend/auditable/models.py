@@ -13,7 +13,7 @@ class Auditable(models.Model, DBComments):
         db_comment='Creation timestamp'
     )
     create_user = models.ForeignKey(
-        'User',
+        'UserProfile',
         related_name='%(app_label)s_%(class)s_CREATE_USER',
         blank=True, null=True,
         on_delete=models.CASCADE,
@@ -24,7 +24,7 @@ class Auditable(models.Model, DBComments):
         db_comment='Last updated/saved timestamp'
     )
     update_user = models.ForeignKey(
-        'User',
+        'UserProfile',
         related_name='%(app_label)s_%(class)s_UPDATE_USER',
         blank=True, null=True,
         on_delete=models.CASCADE,

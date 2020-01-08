@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from api.models.user import User
+from api.models.user_profile import UserProfile
 from .organization import OrganizationSerializer
 
 
@@ -12,7 +12,7 @@ class UserSerializer(serializers.ModelSerializer):
     organization = OrganizationSerializer(read_only=True)
 
     class Meta:
-        model = User
+        model = UserProfile
         fields = (
             'id', 'first_name', 'last_name', 'email',
             'username', 'display_name', 'is_active',

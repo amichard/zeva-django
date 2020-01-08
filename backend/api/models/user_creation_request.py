@@ -20,8 +20,8 @@ class UserCreationRequest(Auditable):
         null=True,
         db_comment="BCeID or IDIR username"
     )
-    user = models.OneToOneField(
-        'User',
+    user_profile = models.OneToOneField(
+        'UserProfile',
         related_name='creation_request',
         on_delete=models.PROTECT,
         unique=True,

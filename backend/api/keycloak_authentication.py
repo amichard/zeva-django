@@ -10,7 +10,7 @@ from django.conf import settings
 from rest_framework import authentication
 from rest_framework import exceptions
 
-from api.models.user import User
+from api.models.user_profile import UserProfile
 from api.models.user_creation_request import UserCreationRequest
 from api.services.keycloak_api import map_user
 
@@ -158,7 +158,7 @@ class UserAuthentication(authentication.BaseAuthentication):
             if 'user_id' in user_token else user_found_via_email
 
         try:
-            user = User.objects.get_by_natural_key(username)
+            user = UserProfile.objects.get_by_natural_key(username)
 
             if not user.is_active:
                 raise exceptions.AuthenticationFailed(
