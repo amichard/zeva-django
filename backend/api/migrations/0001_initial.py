@@ -26,32 +26,4 @@ class Migration(migrations.Migration):
             },
             bases=(models.Model, db_comments.model_mixins.DBComments),
         ),
-        migrations.CreateModel(
-            name='User',
-            fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('create_timestamp', models.DateTimeField(auto_now_add=True, null=True)),
-                ('update_timestamp', models.DateTimeField(auto_now=True, null=True)),
-                ('email', models.EmailField(blank=True, max_length=254, null=True)),
-                ('phone', models.CharField(blank=True, max_length=50, null=True)),
-                ('title', models.CharField(blank=True, max_length=100, null=True)),
-                ('create_user', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='api_user_CREATE_USER', to='api.User')),
-                ('organization', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, to='api.Organization')),
-                ('update_user', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='api_user_UPDATE_USER', to='api.User')),
-            ],
-            options={
-                'db_table': 'user',
-            },
-            bases=(models.Model, db_comments.model_mixins.DBComments),
-        ),
-        migrations.AddField(
-            model_name='organization',
-            name='create_user',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='api_organization_CREATE_USER', to='api.User'),
-        ),
-        migrations.AddField(
-            model_name='organization',
-            name='update_user',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='api_organization_UPDATE_USER', to='api.User'),
-        ),
     ]

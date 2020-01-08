@@ -1,3 +1,4 @@
+from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.db.models import F, Q
 import django.contrib.auth.validators
@@ -5,7 +6,7 @@ import django.contrib.auth.validators
 from auditable.models import Auditable
 
 
-class User(Auditable):
+class User(AbstractUser, Auditable):
     """
     User Model
     """
@@ -33,7 +34,21 @@ class User(Auditable):
         db_comment="Professional Title"
     )
 
+    def natural_key(self):
+        return (self.username,)
+
     class Meta:
         db_table = 'user'
+
+    # Supplemental mapping for base class
+    db_column_supplemental_comments = {
+        'first_name': 'Django field. First name (retrieved from Siteminder',
+        'last_name': 'Django field. Last name (retrieved from Siteminder)',
+        'is_staff': 'Django field. Flag. True if staff user.',
+        'is_superuser': 'Django field. Flag. True if superuser.',
+        'is_active': 'Django field. True if can login.',
+        'date_joined': 'Django field. Date account created.',
+        'last_login': 'Django field. Last login time.',
+    }
 
     db_table_comment = "Users who may access the application"
