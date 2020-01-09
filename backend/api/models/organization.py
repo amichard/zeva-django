@@ -4,6 +4,7 @@ from django.db.models import F
 
 from auditable.models import Auditable
 from .organization_address import OrganizationAddress
+from .user_profile import UserProfile
 
 
 class Organization(Auditable):
@@ -15,6 +16,19 @@ class Organization(Auditable):
     name = models.CharField(
         max_length=500
     )
+
+    @property
+    def members(self):
+        """
+        Gets the list of user for the current organization
+        """
+        data = UserProfile.objects.filter(
+            organization_id=self.id
+        ).order_by(
+            'display_name', 'first_name', 'last_name'
+        )
+
+        return data
 
     @property
     def organization_address(self):

@@ -26,4 +26,26 @@ class OrganizationSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Organization
-        fields = ('id', 'name', 'organization_address', 'create_timestamp')
+        fields = (
+            'id', 'name', 'organization_address', 'create_timestamp'
+        )
+
+
+class OrganizationWithMembersSerializer(OrganizationSerializer):
+    """
+    Same as above, but will load the members
+    """
+    users = serializers.SerializerMethodField()
+
+    def get_users(self, obj):
+        from api.serializers.user import MemberSerializer
+
+        serializer = MemberSerializer(obj.members, read_only=True, many=True)
+
+        return serializer.data
+
+    class Meta:
+        model = Organization
+        fields = (
+            'id', 'name', 'organization_address', 'users', 'create_timestamp'
+        )

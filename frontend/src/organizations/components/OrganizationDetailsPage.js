@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import UsersTable from './UsersTable';
 
 const OrganizationDetailsPage = (props) => {
-  const { details, loading } = props;
+  const { details, loading, members } = props;
   const { organization } = details;
 
   if (loading) {
@@ -27,9 +27,8 @@ const OrganizationDetailsPage = (props) => {
             {organization.organizationAddress.addressLine1}
             <br />
             {organization.organizationAddress.city} {organization.organizationAddress.state}
-            {organization.organizationAddress.postalCode}
             <br />
-            A1B 2C3
+            {organization.organizationAddress.postalCode}
           </div>
         </div>
 
@@ -53,11 +52,7 @@ const OrganizationDetailsPage = (props) => {
       <div className="row">
         <div className="col-sm-12">
           <UsersTable
-            items={[{
-              name: 'Richard',
-              roles: 'Wow',
-              status: 'Status',
-            }]}
+            items={members}
           />
         </div>
       </div>

@@ -12,6 +12,7 @@ import OrganizationDetailsPage from './components/OrganizationDetailsPage';
 const OrganizationDetailsContainer = (props) => {
   const [details, setDetails] = useState({});
   const [loading, setLoading] = useState(true);
+  const [members, setMembers] = useState([]);
   const { keycloak } = props;
 
   const refreshDetails = () => {
@@ -19,7 +20,15 @@ const OrganizationDetailsContainer = (props) => {
 
     setLoading(true);
 
-    axios.get('http://localhost/api/users/current', {
+    const organizationPromise = axios.get('http://localhost/api/organizations/mine', {
+      headers: { Authorization: `Bearer ${token}` },
+    }).then((response) => {
+      const { users } = response.data;
+
+      setMembers(users);
+    });
+
+    const usersPromise = axios.get('http://localhost/api/users/current', {
       headers: { Authorization: `Bearer ${token}` },
     }).then((response) => {
       const { organization, displayName } = response.data;
@@ -28,7 +37,12 @@ const OrganizationDetailsContainer = (props) => {
         displayName,
         organization,
       });
+    });
 
+    Promise.all([
+      organizationPromise,
+      usersPromise,
+    ]).then(() => {
       setLoading(false);
     });
   };
@@ -41,6 +55,7 @@ const OrganizationDetailsContainer = (props) => {
     <OrganizationDetailsPage
       details={details}
       loading={loading}
+      members={members}
     />
   );
 };
